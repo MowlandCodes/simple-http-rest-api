@@ -1,6 +1,6 @@
 import { type MahasiswaModel } from "@/modules/mahasiswa/model";
 
-const mahasiswas: MahasiswaModel["mahasiswa"][] = [
+const mahasiswas: MahasiswaModel["mahasiswas"] = [
   {
     studentId: "108084256279",
     name: "Marian Mossdale",
@@ -254,7 +254,7 @@ const mahasiswas: MahasiswaModel["mahasiswa"][] = [
 ];
 
 export default abstract class Mahasiswa {
-  static getAllMahasiswas(): MahasiswaModel["mahasiswa"][] {
+  static getAllMahasiswas() {
     return mahasiswas;
   }
 
@@ -268,5 +268,38 @@ export default abstract class Mahasiswa {
     }
 
     return mahasiswa;
+  }
+
+  static createMahasiswa(mahasiswa: MahasiswaModel["mahasiswa"]) {
+    const oldLength = mahasiswas.length;
+    const newLength = mahasiswas.push(mahasiswa);
+
+    // Make sure the mahasiswa was added successfully, and only 1 mahasiswa was added
+    return newLength === oldLength + 1;
+  }
+
+  static updateMahasiswa(
+    studentId: string,
+    mahasiswa: MahasiswaModel["updateMahasiswa"],
+  ): boolean {
+    const index = mahasiswas.findIndex((m) => m.studentId === studentId);
+
+    if (index === -1 || !mahasiswas[index]) {
+      return false;
+    }
+
+    mahasiswas[index] = { ...mahasiswas[index], ...mahasiswa }; // bisa buat put sama patch, karena data lama di timpa sama data baru
+    return true;
+  }
+
+  static deleteMahasiswa(studentId: string): boolean {
+    const index = mahasiswas.findIndex((m) => m.studentId === studentId);
+
+    if (index === -1 || !mahasiswas[index]) {
+      return false;
+    }
+
+    mahasiswas.splice(index, 1);
+    return true;
   }
 }

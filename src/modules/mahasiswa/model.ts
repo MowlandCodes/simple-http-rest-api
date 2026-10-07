@@ -1,13 +1,26 @@
-import { t, type UnwrapSchema } from "elysia";
+import Elysia, { t, type UnwrapSchema } from "elysia";
+import { GeneralModel } from "@/modules/general/model";
 
-export const MahasiswaModel = {
-  mahasiswa: t.Object({
-    name: t.String(),
-    studentId: t.String(),
-    major: t.String(),
+const mahasiswa = t.Object({
+  name: t.String(),
+  studentId: t.String(),
+  major: t.String(),
+});
+
+const model = {
+  mahasiswa,
+  mahasiswas: t.Array(mahasiswa),
+  getMahasiswaByStudentIdParams: t.Object({
+    id: t.String(),
   }),
-} as const;
+  updateMahasiswa: t.Partial(mahasiswa),
+  idMahasiswaParams: t.Object({
+    id: t.String(),
+  }),
+};
+
+export const MahasiswaModel = new Elysia().use(GeneralModel).model(model);
 
 export type MahasiswaModel = {
-  [k in keyof typeof MahasiswaModel]: UnwrapSchema<(typeof MahasiswaModel)[k]>;
+  [K in keyof typeof model]: UnwrapSchema<(typeof model)[K]>;
 };
