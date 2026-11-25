@@ -17,7 +17,8 @@ const model = {
   getProductById: product,
   getAllProducts: t.Array(product),
   getProductByIdParams: t.Object({
-    id: t.Numeric(),
+    id: t.String(), // Seharusnya bisa pake t.Numeric() tapi ada bug di elysia (Issue #2045 [https://github.com/elysiajs/elysia/issues/2045])
+      // Solusi sementara pake t.String() dan nanti di controller diubah ke number
   }),
   successResponse: t.Object({
     message: t.String(),
@@ -27,6 +28,10 @@ const model = {
     message: t.String(),
     data: t.Null(),
   }),
+  errorResponse: t.Object({
+    message: t.String(),
+    data: t.Null(),
+  })
 };
 
 export const ProductModel = new Elysia().model(model);

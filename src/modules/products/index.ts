@@ -1,9 +1,8 @@
 import { db } from "@/db";
 import { productTable } from "@/db/schemas/products";
-import { Elysia } from "elysia";
 import { ProductModel } from "@/modules/products/model";
-import { eq } from "drizzle-orm";
 import ProductService from "@/modules/products/service";
+import { Elysia } from "elysia";
 
 export const products = new Elysia({ prefix: "/products" });
 
@@ -12,14 +11,19 @@ products
   .get(
     "/",
     async (ctx) => {
-      const data = await ProductService.getAllProducts();
+      try {
+        const data = await ProductService.getAllProducts();
 
-      if (data.length === 0) {
-        ctx.set.status = 404;
-        return { message: "No product found", data: null };
+        if (data.length === 0) {
+          ctx.set.status = 404;
+          return { message: "No product found", data: null };
+        }
+
+        return { message: "Products found successfully", data };
+      } catch (err) {
+        ctx.set.status = 500;
+        return { message: "Internal server error", data: null };
       }
-
-      return { message: "Products found successfully", data };
     },
     {
       response: {
@@ -31,14 +35,24 @@ products
   .get(
     "/:id",
     async (ctx) => {
-      const data = await ProductService.getProductById(ctx.params.id);
+      try {
+        if (isNaN(Number(ctx.params.id))) {
+          ctx.set.status = 400;
+          return { message: "Invalid product ID", data: null };
+        }
 
-      if (!data) {
-        ctx.set.status = 404;
-        return { message: "Product not found", data: null };
+        const data = await ProductService.getProductById(Number(ctx.params.id));
+
+        if (!data) {
+          ctx.set.status = 404;
+          return { message: "Product not found", data: null };
+        }
+
+        return { message: "Product found successfully", data };
+      } catch (err) {
+        ctx.set.status = 500;
+        return { message: "Internal server error", data: null };
       }
-
-      return { message: "Product found successfully", data };
     },
     {
       params: "getProductByIdParams",
@@ -50,12 +64,22 @@ products
   )
   .post(
     "/",
-    async ({ body }) => {
-      const data = await db.insert(productTable).values(body).returning();
+    async ({ body, set }) => {
+      try {
+        const data = await db.insert(productTable).values(body).returning();
 
-      return data;
+        set.status = 201;
+        return { message: "Product created successfully", data: data[0] };
+      } catch (err) {
+        set.status = 500;
+        return { message: "Internal server error", data: null };
+      }
     },
     {
       body: "createProduct",
+      response: {
+        201: "successResponse",
+        500: "errorResponse",
+      },
     },
   );
