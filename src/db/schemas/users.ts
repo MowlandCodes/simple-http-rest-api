@@ -7,10 +7,3 @@ export const usersTable = pgTable("users", {
   email: varchar({ length: 255 }).notNull().unique(),
 });
 
-export const productTable = pgTable("products", {
-  id: integer().primaryKey().generatedAlwaysAsIdentity(),
-  nama: varchar({ length: 200 }).notNull(),
-  stok: integer().default(0).notNull(),
-  harga: integer().default(0).notNull(),
-  created_at: timestamp().defaultNow().notNull(),
-});

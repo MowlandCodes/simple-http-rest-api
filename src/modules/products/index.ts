@@ -1,5 +1,5 @@
 import { db } from "@/db";
-import { productTable } from "@/db/schema";
+import { productTable } from "@/db/schemas/products";
 import { Elysia } from "elysia";
 import { ProductModel } from "@/modules/products/model";
 import { eq } from "drizzle-orm";
