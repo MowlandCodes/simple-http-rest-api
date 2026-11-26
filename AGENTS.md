@@ -25,6 +25,17 @@ Course project: REST API on **Bun + Elysia + Drizzle ORM (PostgreSQL)**. Single 
 - drizzle-kit/orm are pinned to a `1.0.0-rc` prerelease — docs for the stable release may not match.
 - Migrations are drizzle-kit v1 format: one folder per migration (`migration.sql` + `snapshot.json`); there is no `meta/_journal.json`. Don't hand-edit generated folders.
 
+## Logging
+
+- Logging is [Logixlysia](https://logixlysia.vercel.app). The instance is created once in `src/lib/logging.ts` — `.use(logging)` it where needed, but never call `logixlysia()` again in a module (a second instance only partially runs its hooks).
+- `requestId: true` always; the preset follows `NODE_ENV`: `dev` = pretty text + startup banner, `prod` (set by `bun run start`) = one JSON line per record + autoRedact.
+- Use the `log` from handler context, not `console`.
+- Errors you `catch` yourself never reach Elysia's `onError` — call `log.error(err, ...)` inside the catch block or the failure stays invisible (see products routes).
+- SQL query logs: start the server with `DB_LOG=true` (drizzle's built-in logger, plain console output).
+- No file logging — everything goes to stdout/stderr.
+- `bun build` **inlines `process.env.NODE_ENV` at build time** — the bundle would freeze on the dev preset (it was unset during build). Read it as `Bun.env.NODE_ENV` instead, as `src/lib/logging.ts` does.
+- If log lines seem to be missing, check for a second server: Bun allows two processes to listen on the same port (SO_REUSEPORT) and splits requests between them — `ss -tlnp | grep 3100`.
+
 ## Architecture
 
 - Entry: `src/index.ts` — Elysia app, global prefix `/api`, mounts all modules, `onError` maps `NOT_FOUND`.
