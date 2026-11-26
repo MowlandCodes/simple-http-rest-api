@@ -1,6 +1,7 @@
 import { db } from "@/db";
 import { productTable } from "@/db/schemas/products";
 import { logging } from "@/lib/logging";
+import { authGuard } from "@/modules/auth/plugin";
 import { ProductModel } from "@/modules/products/model";
 import ProductService from "@/modules/products/service";
 import { Elysia } from "elysia";
@@ -12,6 +13,7 @@ export const products = new Elysia({
 
 products
   .use(logging)
+  .use(authGuard)
   .use(ProductModel)
   .get(
     "/",
@@ -36,6 +38,7 @@ products
         200: "successResponse",
         404: "notFoundResponse",
       },
+      isAuth: true,
       detail: { summary: "List products" },
     },
   )
@@ -68,6 +71,7 @@ products
         200: "successResponse",
         404: "notFoundResponse",
       },
+      isAuth: true,
       detail: { summary: "Get product by ID" },
     },
   )
@@ -91,6 +95,7 @@ products
         201: "successResponse",
         500: "errorResponse",
       },
+      isAuth: true,
       detail: { summary: "Create product" },
     },
   );

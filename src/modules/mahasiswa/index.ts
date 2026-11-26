@@ -1,6 +1,7 @@
-import Elysia from "elysia";
-import Mahasiswa from "@/modules/mahasiswa/service";
+import { authGuard } from "@/modules/auth/plugin";
 import { MahasiswaModel } from "@/modules/mahasiswa/model";
+import Mahasiswa from "@/modules/mahasiswa/service";
+import Elysia from "elysia";
 
 export const mahasiswa = new Elysia({
   prefix: "/mahasiswa",
@@ -8,6 +9,7 @@ export const mahasiswa = new Elysia({
 });
 
 mahasiswa
+  .use(authGuard)
   .use(MahasiswaModel)
   .get(
     "/",
@@ -16,6 +18,7 @@ mahasiswa
       data: Mahasiswa.getAllMahasiswas(),
     }),
     {
+      isAuth: true,
       response: {
         200: "successResponse",
       },
@@ -41,6 +44,7 @@ mahasiswa
       };
     },
     {
+      isAuth: true,
       params: "getMahasiswaByStudentIdParams",
       response: {
         200: "successResponse",
@@ -70,6 +74,7 @@ mahasiswa
     },
     {
       body: "mahasiswa",
+      isAuth: true,
       response: {
         201: "successResponse",
         500: "errorResponse",
@@ -100,6 +105,7 @@ mahasiswa
     {
       params: "idMahasiswaParams",
       body: "updateMahasiswa",
+      isAuth: true,
       response: {
         200: "successResponse",
         404: "notFoundResponse",
@@ -130,6 +136,7 @@ mahasiswa
     {
       params: "idMahasiswaParams",
       body: "updateMahasiswa",
+      isAuth: true,
       response: {
         200: "successResponse",
         404: "notFoundResponse",
@@ -157,6 +164,7 @@ mahasiswa
     },
     {
       params: "idMahasiswaParams",
+      isAuth: true,
       response: {
         200: "successResponse",
         404: "errorResponse",
