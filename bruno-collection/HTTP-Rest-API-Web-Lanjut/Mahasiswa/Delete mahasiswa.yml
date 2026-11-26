@@ -1,0 +1,68 @@
+info:
+  name: Delete mahasiswa
+  type: http
+  seq: 6
+  tags:
+    - Mahasiswa
+
+http:
+  method: DELETE
+  url: "{{baseUrl}}/api/mahasiswa/:id"
+  params:
+    - name: id
+      value: ""
+      type: path
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: true
+
+examples:
+  - name: 200 Response
+    description: Response for status 200
+    request:
+      url: "{{baseUrl}}/api/mahasiswa/:id"
+      method: DELETE
+      params:
+        - name: id
+          value: ""
+          type: path
+    response:
+      status: 200
+      statusText: OK
+      headers:
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          {
+            "message": "",
+            "data": ""
+          }
+  - name: 404 Response
+    description: Response for status 404
+    request:
+      url: "{{baseUrl}}/api/mahasiswa/:id"
+      method: DELETE
+      params:
+        - name: id
+          value: ""
+          type: path
+    response:
+      status: 404
+      statusText: Not Found
+      headers:
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          {
+            "message": "",
+            "data": ""
+          }

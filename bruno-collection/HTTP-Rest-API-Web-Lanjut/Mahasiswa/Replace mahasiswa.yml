@@ -1,0 +1,92 @@
+info:
+  name: Replace mahasiswa
+  type: http
+  seq: 4
+  tags:
+    - Mahasiswa
+
+http:
+  method: PUT
+  url: "{{baseUrl}}/api/mahasiswa/:id"
+  params:
+    - name: id
+      value: ""
+      type: path
+  body:
+    type: json
+    data: |-
+      {
+        "name": "",
+        "studentId": "",
+        "major": ""
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: true
+
+examples:
+  - name: 200 Response
+    description: Response for status 200
+    request:
+      url: "{{baseUrl}}/api/mahasiswa/:id"
+      method: PUT
+      params:
+        - name: id
+          value: ""
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+            "name": "",
+            "studentId": "",
+            "major": ""
+          }
+    response:
+      status: 200
+      statusText: OK
+      headers:
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          {
+            "message": "",
+            "data": ""
+          }
+  - name: 404 Response
+    description: Response for status 404
+    request:
+      url: "{{baseUrl}}/api/mahasiswa/:id"
+      method: PUT
+      params:
+        - name: id
+          value: ""
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+            "name": "",
+            "studentId": "",
+            "major": ""
+          }
+    response:
+      status: 404
+      statusText: Not Found
+      headers:
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          {
+            "message": "",
+            "data": ""
+          }

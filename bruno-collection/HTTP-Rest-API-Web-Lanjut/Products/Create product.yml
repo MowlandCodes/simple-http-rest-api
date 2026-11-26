@@ -1,0 +1,80 @@
+info:
+  name: Create product
+  type: http
+  seq: 2
+  tags:
+    - Products
+
+http:
+  method: POST
+  url: "{{baseUrl}}/api/products/"
+  body:
+    type: json
+    data: |-
+      {
+        "nama": "",
+        "harga": 0,
+        "stok": 0
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: true
+
+examples:
+  - name: 201 Response
+    description: Response for status 201
+    request:
+      url: "{{baseUrl}}/api/products/"
+      method: POST
+      body:
+        type: json
+        data: |-
+          {
+            "nama": "",
+            "harga": 0,
+            "stok": 0
+          }
+    response:
+      status: 201
+      statusText: Created
+      headers:
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          {
+            "message": "",
+            "data": ""
+          }
+  - name: 500 Response
+    description: Response for status 500
+    request:
+      url: "{{baseUrl}}/api/products/"
+      method: POST
+      body:
+        type: json
+        data: |-
+          {
+            "nama": "",
+            "harga": 0,
+            "stok": 0
+          }
+    response:
+      status: 500
+      statusText: Internal Server Error
+      headers:
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          {
+            "message": "",
+            "data": ""
+          }

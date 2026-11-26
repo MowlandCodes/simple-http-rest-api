@@ -1,0 +1,15 @@
+opencollection: 1.0.0
+
+info:
+  name: HTTP-Rest-API-Web-Lanjut
+  version: "1"
+
+docs:
+  content: Bun + Elysia + Drizzle (PostgreSQL) API. Auth pakai JWT Bearer (argon2id).
+  type: text/markdown
+bundled: false
+extensions:
+  bruno:
+    ignore:
+      - node_modules
+      - .git

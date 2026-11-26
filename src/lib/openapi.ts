@@ -9,8 +9,8 @@ export const BEARER_SCHEME = "bearerAuth";
 export const openapiPlugin = openapi({
   // Plugin ini di-mount di dalam instance prefix "/api",
   // jadi jadinya /api/openapi (UI) dan /api/openapi/json (spec).
-  path: "/openapi",
-  specPath: "/openapi/json",
+  path: "/docs",
+  specPath: "/docs/openapi.json",
   provider: "scalar",
   openapiVersion: "3.0.3",
   documentation: {

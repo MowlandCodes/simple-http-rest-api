@@ -1,0 +1,115 @@
+info:
+  name: Register a new user
+  type: http
+  seq: 1
+  tags:
+    - Auth
+
+http:
+  method: POST
+  url: "{{baseUrl}}/api/auth/register"
+  body:
+    type: json
+    data: |-
+      {
+        "name": "",
+        "email": "",
+        "password": "",
+        "age": ""
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: true
+
+examples:
+  - name: 201 Response
+    description: Response for status 201
+    request:
+      url: "{{baseUrl}}/api/auth/register"
+      method: POST
+      body:
+        type: json
+        data: |-
+          {
+            "name": "",
+            "email": "",
+            "password": "",
+            "age": ""
+          }
+    response:
+      status: 201
+      statusText: Created
+      headers:
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          {
+            "message": "",
+            "data": {
+              "id": 0,
+              "name": "",
+              "email": "",
+              "age": 0
+            }
+          }
+  - name: 409 Response
+    description: Response for status 409
+    request:
+      url: "{{baseUrl}}/api/auth/register"
+      method: POST
+      body:
+        type: json
+        data: |-
+          {
+            "name": "",
+            "email": "",
+            "password": "",
+            "age": ""
+          }
+    response:
+      status: 409
+      statusText: Conflict
+      headers:
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          {
+            "message": "",
+            "data": ""
+          }
+  - name: 500 Response
+    description: Response for status 500
+    request:
+      url: "{{baseUrl}}/api/auth/register"
+      method: POST
+      body:
+        type: json
+        data: |-
+          {
+            "name": "",
+            "email": "",
+            "password": "",
+            "age": ""
+          }
+    response:
+      status: 500
+      statusText: Internal Server Error
+      headers:
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          {
+            "message": "",
+            "data": ""
+          }

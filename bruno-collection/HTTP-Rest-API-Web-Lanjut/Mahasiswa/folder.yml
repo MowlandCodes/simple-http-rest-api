@@ -1,0 +1,10 @@
+info:
+  name: Mahasiswa
+  type: folder
+
+request:
+  auth: inherit
+
+docs:
+  content: Student CRUD (in-memory)
+  type: text/markdown

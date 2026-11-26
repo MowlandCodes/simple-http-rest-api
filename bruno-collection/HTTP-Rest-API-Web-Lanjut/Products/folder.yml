@@ -1,0 +1,10 @@
+info:
+  name: Products
+  type: folder
+
+request:
+  auth: inherit
+
+docs:
+  content: Product CRUD (PostgreSQL)
+  type: text/markdown

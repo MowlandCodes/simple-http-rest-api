@@ -1,0 +1,10 @@
+info:
+  name: Auth
+  type: folder
+
+request:
+  auth: inherit
+
+docs:
+  content: Register, login, current user
+  type: text/markdown
