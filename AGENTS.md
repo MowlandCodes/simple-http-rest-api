@@ -49,6 +49,31 @@ JWT auth in `src/modules/auth/` — `POST /api/auth/register`, `POST /api/auth/l
 - Login returns one generic `Invalid email or password` for both unknown email and wrong password. Don't add distinct messages — that's user enumeration.
 - Elysia body-validation failures return **422**, not 400 (app-wide default, not auth-specific).
 
+### Protecting a route
+
+`src/modules/auth/plugin.ts` exports `authGuard`, an Elysia plugin that registers the `isAuth` macro (it also carries the `jwt` decorator and the logging instance).
+
+```ts
+import { authGuard } from "@/modules/auth/plugin";
+import { AuthModel } from "@/modules/auth/model";
+
+new Elysia({ prefix: "/orders" })
+  .use(authGuard) // required before any `isAuth: true` route
+  .use(AuthModel) // only if you reference "authError" / "authSuccess"
+  .get("/", ({ user }) => ({ message: "ok", data: user }), {
+    isAuth: true,
+    response: { 200: "successResponse", 401: "authError" },
+  });
+```
+
+- Without `isAuth: true` the route stays **public** — the guard is opt-in per route.
+- `isAuth` verifies the Bearer token, loads the user from Postgres, and puts it on the context as `user` (`{ id, name, email, age }`), so handlers just read `({ user })`.
+- Guard failures use `return status(401 | 500, ...)` imported from `elysia`. Never `throw` — Elysia turns a thrown error into a 500 and loses the status.
+- 401 messages: `Missing or invalid Authorization header` (absent or non-Bearer header) and `Invalid or expired token` (bad, expired, or deleted user).
+- A DB failure inside the guard is caught, logged with `route: auth guard`, and returns 500.
+- `authGuard` is named (`"auth-guard"`), so any number of modules may `.use()` it — Elysia dedupes and registers the macro once.
+- `GET /api/auth/profile` is the reference implementation.
+
 ## Architecture
 
 - Entry: `src/index.ts` — Elysia app, global prefix `/api`, mounts all modules, `onError` maps `NOT_FOUND`.
