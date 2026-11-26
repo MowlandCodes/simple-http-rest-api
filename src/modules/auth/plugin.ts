@@ -1,4 +1,5 @@
 import { logging } from "@/lib/logging";
+import { BEARER_SCHEME } from "@/lib/openapi";
 import AuthService from "@/modules/auth/service";
 import { jwt } from "@elysiajs/jwt";
 import { Elysia, status } from "elysia";
@@ -39,6 +40,9 @@ export const authGuard = new Elysia({ name: "auth-guard" })
     // Pakai di route: `.get("/", handler, { isAuth: true })`
     // Handler dapat `user` yang sudah diambil dari database.
     isAuth: {
+      // Route yang pakai `isAuth: true` otomatis ditandai butuh Bearer token
+      // di OpenAPI spec, tanpa harus nulis `detail.security` per route.
+      detail: { security: [{ [BEARER_SCHEME]: [] }] },
       async resolve({ jwt, headers, log }) {
         const token = getBearerToken(headers.authorization);
 

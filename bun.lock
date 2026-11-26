@@ -5,6 +5,7 @@
     "": {
       "name": "http-rest-api",
       "dependencies": {
+        "@elysia/openapi": "^1.4.17",
         "@elysiajs/jwt": "^1.4.2",
         "dotenv": "^18.0.10",
         "drizzle-orm": "^1.0.0-rc.5-ab785fc",
@@ -26,6 +27,8 @@
     "@borewit/text-codec": ["@borewit/text-codec@0.2.3", "", {}, "sha512-49CycTz1aAZmvFcwkeFyhud1HUmRIB5Tabf7ALV+VA4Iu85MTfz2cUwzPagMFAdVBvrWdkCxG67I30tUwwpKsw=="],
 
     "@drizzle-team/brocli": ["@drizzle-team/brocli@0.12.1", "", {}, "sha512-yHwomvolVafvUXhy5TdiJVkuNCxXn+bKOs2aWiWEQh/5YaV97Oa/abJz3dmx7lxgIUsUlS1Jl4mEfvJPo3YsVw=="],
+
+    "@elysia/openapi": ["@elysia/openapi@1.4.17", "", { "peerDependencies": { "@sinclair/typebox": ">= 0.34.0 < 1", "elysia": ">= 1.4.0", "typescript": ">= 5.0.0" } }, "sha512-rmyqxfoQyM6QMsxelt6RMuM8b0I6y33KgGcrm5LKw2xIOVHRFg9EAbxFejZBfyZmVYkY3EazgaPNlEz4HJ3Thg=="],
 
     "@elysiajs/jwt": ["@elysiajs/jwt@1.4.2", "", { "dependencies": { "jose": "^6.0.11" }, "peerDependencies": { "elysia": ">= 1.4.27" } }, "sha512-gSPjF8KoL7cQIxL3kb+Ui9g5jpBdO4iUTe2+F52w66JVFct2K8cTLum8PEArxRZNg4PBrg100h6i1bJ2zfcqMg=="],
 

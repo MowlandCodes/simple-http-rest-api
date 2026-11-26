@@ -1,6 +1,7 @@
 import "dotenv/config";
 import { Elysia } from "elysia";
 import { logging } from "@/lib/logging";
+import { openapiPlugin } from "@/lib/openapi";
 import { auth } from "@/modules/auth";
 import { mahasiswa } from "@/modules/mahasiswa";
 import { products } from "@/modules/products";
@@ -9,6 +10,7 @@ new Elysia({
   prefix: "/api",
 })
   .use(logging)
+  .use(openapiPlugin)
   .use(auth)
   .use(mahasiswa)
   .use(products)

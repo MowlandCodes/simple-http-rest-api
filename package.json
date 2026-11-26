@@ -21,6 +21,7 @@
     "typescript": "^7.0.2"
   },
   "dependencies": {
+    "@elysia/openapi": "^1.4.17",
     "@elysiajs/jwt": "^1.4.2",
     "dotenv": "^18.0.10",
     "drizzle-orm": "^1.0.0-rc.5-ab785fc",
