@@ -2,7 +2,10 @@ import Elysia from "elysia";
 import Mahasiswa from "@/modules/mahasiswa/service";
 import { MahasiswaModel } from "@/modules/mahasiswa/model";
 
-export const mahasiswa = new Elysia({ prefix: "/mahasiswa" });
+export const mahasiswa = new Elysia({
+  prefix: "/mahasiswa",
+  detail: { tags: ["Mahasiswa"] },
+});
 
 mahasiswa
   .use(MahasiswaModel)
@@ -16,6 +19,7 @@ mahasiswa
       response: {
         200: "successResponse",
       },
+      detail: { summary: "List all mahasiswa" },
     },
   )
   .get(
@@ -37,10 +41,12 @@ mahasiswa
       };
     },
     {
+      params: "getMahasiswaByStudentIdParams",
       response: {
         200: "successResponse",
         404: "notFoundResponse",
       },
+      detail: { summary: "Get mahasiswa by student ID" },
     },
   )
   .post(
@@ -68,6 +74,7 @@ mahasiswa
         201: "successResponse",
         500: "errorResponse",
       },
+      detail: { summary: "Create mahasiswa" },
     },
   )
   .put(
@@ -91,7 +98,13 @@ mahasiswa
       };
     },
     {
+      params: "idMahasiswaParams",
       body: "updateMahasiswa",
+      response: {
+        200: "successResponse",
+        404: "notFoundResponse",
+      },
+      detail: { summary: "Replace mahasiswa" },
     },
   )
   .patch(
@@ -115,7 +128,13 @@ mahasiswa
       };
     },
     {
+      params: "idMahasiswaParams",
       body: "updateMahasiswa",
+      response: {
+        200: "successResponse",
+        404: "notFoundResponse",
+      },
+      detail: { summary: "Partially update mahasiswa" },
     },
   )
   .delete(
@@ -142,6 +161,7 @@ mahasiswa
         200: "successResponse",
         404: "errorResponse",
       },
+      detail: { summary: "Delete mahasiswa" },
     },
   )
   .connect("/", (ctx) => {

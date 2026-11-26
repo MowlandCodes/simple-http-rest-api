@@ -3,7 +3,10 @@ import { authGuard } from "@/modules/auth/plugin";
 import AuthService from "@/modules/auth/service";
 import { Elysia } from "elysia";
 
-export const auth = new Elysia({ prefix: "/auth" });
+export const auth = new Elysia({
+  prefix: "/auth",
+  detail: { tags: ["Auth"] },
+});
 
 auth
   // authGuard nyediain: logging, `jwt` (sign di login), dan macro `isAuth`
@@ -40,6 +43,7 @@ auth
         409: "authError",
         500: "authError",
       },
+      detail: { summary: "Register a new user" },
     },
   )
   .post(
@@ -93,6 +97,7 @@ auth
         401: "authError",
         500: "authError",
       },
+      detail: { summary: "Log in and receive a JWT" },
     },
   )
   // Contoh endpoint yang diproteksi: tanpa `isAuth` route ini tetap publik.
@@ -106,5 +111,6 @@ auth
         401: "authError",
         500: "authError",
       },
+      detail: { summary: "Get the current user" },
     },
   );

@@ -5,7 +5,10 @@ import { ProductModel } from "@/modules/products/model";
 import ProductService from "@/modules/products/service";
 import { Elysia } from "elysia";
 
-export const products = new Elysia({ prefix: "/products" });
+export const products = new Elysia({
+  prefix: "/products",
+  detail: { tags: ["Products"] },
+});
 
 products
   .use(logging)
@@ -33,6 +36,7 @@ products
         200: "successResponse",
         404: "notFoundResponse",
       },
+      detail: { summary: "List products" },
     },
   )
   .get(
@@ -64,6 +68,7 @@ products
         200: "successResponse",
         404: "notFoundResponse",
       },
+      detail: { summary: "Get product by ID" },
     },
   )
   .post(
@@ -86,5 +91,6 @@ products
         201: "successResponse",
         500: "errorResponse",
       },
+      detail: { summary: "Create product" },
     },
   );
