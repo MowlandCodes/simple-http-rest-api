@@ -1,11 +1,13 @@
 import "dotenv/config";
 import { Elysia } from "elysia";
+import { logging } from "@/lib/logging";
 import { mahasiswa } from "@/modules/mahasiswa";
 import { products } from "@/modules/products";
 
 new Elysia({
   prefix: "/api",
 })
+  .use(logging)
   .use(mahasiswa)
   .use(products)
   .onError((ctx) => {
@@ -15,8 +17,9 @@ new Elysia({
       };
     }
   })
-  .listen(process.env.APP_PORT ?? 3100, (app) => {
-    console.log(
-      `🦊 Server is running on http://${app.url.hostname}:${app.url.port}`,
+  .listen(Bun.env.APP_PORT ?? 3100, (app) => {
+    logging.store.pino.info(
+      { url: `http://${app.url.hostname}:${app.url.port}` },
+      "Server started",
     );
   });

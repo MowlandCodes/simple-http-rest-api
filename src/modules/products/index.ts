@@ -1,5 +1,6 @@
 import { db } from "@/db";
 import { productTable } from "@/db/schemas/products";
+import { logging } from "@/lib/logging";
 import { ProductModel } from "@/modules/products/model";
 import ProductService from "@/modules/products/service";
 import { Elysia } from "elysia";
@@ -7,6 +8,7 @@ import { Elysia } from "elysia";
 export const products = new Elysia({ prefix: "/products" });
 
 products
+  .use(logging)
   .use(ProductModel)
   .get(
     "/",
@@ -21,6 +23,7 @@ products
 
         return { message: "Products found successfully", data };
       } catch (err) {
+        ctx.log.error(err, { route: "GET /products" });
         ctx.set.status = 500;
         return { message: "Internal server error", data: null };
       }
@@ -50,6 +53,7 @@ products
 
         return { message: "Product found successfully", data };
       } catch (err) {
+        ctx.log.error(err, { route: "GET /products/:id" });
         ctx.set.status = 500;
         return { message: "Internal server error", data: null };
       }
@@ -64,13 +68,14 @@ products
   )
   .post(
     "/",
-    async ({ body, set }) => {
+    async ({ body, set, log }) => {
       try {
         const data = await db.insert(productTable).values(body).returning();
 
         set.status = 201;
         return { message: "Product created successfully", data: data[0] };
       } catch (err) {
+        log.error(err, { route: "POST /products" });
         set.status = 500;
         return { message: "Internal server error", data: null };
       }
